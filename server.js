@@ -16,12 +16,12 @@ app.use(helmet());
 app.use(express.json());
 
 // Serve OpenAPI spec files (static)
-app.use("/greetings-docs", express.static(path.join(__dirname, "greetings-docs")));
+app.use("/specs", express.static(path.join(__dirname, "specs")));
 
 // Load YAML specs
-const v1Spec = YAML.load(path.join(__dirname, "greetings-docs/greetings-v1.yaml"));
-const v2Spec = YAML.load(path.join(__dirname, "greetings-docs/greetings-v2.yaml"));
-const v3Spec = YAML.load(path.join(__dirname, "greetings-docs/greetings-v3.yaml"));
+const v1Spec = YAML.load(path.join(__dirname, "specs/greetings-v1.yaml"));
+const v2Spec = YAML.load(path.join(__dirname, "specs/greetings-v2.yaml"));
+const v3Spec = YAML.load(path.join(__dirname, "specs/greetings-v3.yaml"));
 
 // Serve Swagger UI for each version
 app.use("/docs/v1", swaggerUi.serve, swaggerUi.setup(v1Spec));
@@ -44,7 +44,7 @@ app.listen(PORT, () => {
   console.log(`   ${BASE_URL}/docs/v2`);
   console.log(`   ${BASE_URL}/docs/v3`);
   console.log("📂 Specs available at:");
-  console.log(`   ${BASE_URL}/specs/openapi-v1.yaml`);
-  console.log(`   ${BASE_URL}/specs/openapi-v2.yaml`);
-  console.log(`   ${BASE_URL}/specs/openapi-v3.yaml`);
+  console.log(`   ${BASE_URL}/specs/greetings-v1.yaml`);
+  console.log(`   ${BASE_URL}/specs/greetings-v2.yaml`);
+  console.log(`   ${BASE_URL}/specs/greetings-v3.yaml`);
 });
