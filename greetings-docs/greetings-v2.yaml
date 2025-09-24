@@ -1,0 +1,116 @@
+openapi: 3.0.3
+info:
+  title: Greetings API v2
+  version: 2.0.0
+  description: |
+    Version 2 adds support for creating greetings and retrieving them by ID.
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+  - url: https://greetings-api-6w79.onrender.com/api/v2
+    description: Production server (v2)
+paths:
+  /hello:
+    get:
+      summary: Returns a greeting
+      operationId: getGreeting
+      parameters:
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+            example: Ezinne
+        - name: lang
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [en, fr, es, ig]
+            example: en
+      responses:
+        '200':
+          description: Greeting response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: { type: string }
+              example:
+                message: "Hello, Ezinne!"
+    post:
+      summary: Create a greeting
+      operationId: createGreeting
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string }
+                lang: { type: string, enum: [en, fr, es, ig] }
+              required: [name]
+      responses:
+        '201':
+          description: Greeting created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id: { type: string }
+                  message: { type: string }
+              example:
+                id: "1"
+                message: "Bonjour, Ezinne!"
+  /hello/{id}:
+    get:
+      summary: Retrieve a saved greeting by ID
+      operationId: getGreetingById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Greeting found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id: { type: string }
+                  message: { type: string }
+              example:
+                id: "1"
+                message: "¡Hola, Ezinne!"
+        '404':
+          description: Greeting not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error: { type: string }
+  /languages:
+    get:
+      summary: Get supported languages
+      operationId: getLanguages
+      responses:
+        '200':
+          description: List of supported languages
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  languages:
+                    type: array
+                    items: { type: string }
+              example:
+                languages: ["en", "fr", "es", "ig"]

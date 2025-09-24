@@ -1,0 +1,127 @@
+openapi: 3.0.3
+info:
+  title: Greetings API v3
+  version: 3.0.0
+  description: Version 3 adds full CRUD support for greetings.
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+  - url: https://greetings-api-6w79.onrender.com/api/v3
+    description: Production server (v3)
+paths:
+  /hello:
+    get:
+      summary: Returns a greeting
+      operationId: getGreeting
+      parameters:
+        - name: name
+          in: query
+          schema: { type: string }
+        - name: lang
+          in: query
+          schema: { type: string, enum: [en, fr, es, ig] }
+      responses:
+        '200':
+          description: Greeting response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: { type: string }
+    post:
+      summary: Create a greeting
+      operationId: createGreeting
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string }
+                lang: { type: string, enum: [en, fr, es, ig] }
+              required: [name]
+      responses:
+        '201':
+          description: Greeting created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id: { type: string }
+                  message: { type: string }
+  /hello/{id}:
+    get:
+      summary: Retrieve a greeting by ID
+      operationId: getGreetingById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Greeting found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id: { type: string }
+                  message: { type: string }
+    put:
+      summary: Update a greeting
+      operationId: updateGreeting
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string }
+                lang: { type: string, enum: [en, fr, es, ig] }
+              required: [name]
+      responses:
+        '200':
+          description: Greeting updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id: { type: string }
+                  message: { type: string }
+        '404':
+          description: Greeting not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error: { type: string }
+  /languages:
+    get:
+      summary: Get supported languages
+      operationId: getLanguages
+      responses:
+        '200':
+          description: List of supported languages
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  languages:
+                    type: array
+                    items: { type: string }
+              example:
+                languages: ["en", "fr", "es", "ig"]

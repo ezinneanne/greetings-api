@@ -1,0 +1,78 @@
+openapi: 3.0.3
+info:
+  title: Greetings API 
+  version: 1.0.0
+  description: This is version 1 of the Greetings API. It demonstrates a simple greeting endpoint with query parameters.
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+  - url: https://greetings-api-6w79.onrender.com/api/v1
+    description: Production server (v1)
+paths:
+  /hello:
+    get:
+      summary: Returns a greeting
+      operationId: getGreeting
+      parameters:
+        - name: name
+          in: query
+          required: false
+          description: Name of the person to greet
+          schema:
+            type: string
+            example: Ezinne
+        - name: lang
+          in: query
+          required: false
+          description: Language of the greeting (default is English)
+          schema:
+            type: string
+            enum: [en, fr, es, ig]
+            example: en
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                english:
+                  value: { "message": "Hello, Ezinne!" }
+                french:
+                  value: { "message": "Bonjour, Ezinne!" }
+                spanish:
+                  value: { "message": "¡Hola, Ezinne!" }
+                igbo:
+                  value: { "message": "Ndeewo, Ezinne!" }
+        '400':
+          description: Invalid query parameter
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /languages:
+    get:
+      summary: Get supported languages
+      operationId: getLanguages
+      responses:
+        '200':
+          description: List of supported languages
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  languages:
+                    type: array
+                    items:
+                      type: string
+              example:
+                languages: ["en", "fr", "es", "ig"]
