@@ -16,7 +16,7 @@ app.use(helmet());
 app.use(express.json());
 
 // Serve OpenAPI spec files (static)
-app.use("/specs", express.static(path.join(__dirname, "greetings-docs")));
+app.use("/greetings-docs", express.static(path.join(__dirname, "greetings-docs")));
 
 // Load YAML specs
 const v1Spec = YAML.load(path.join(__dirname, "greetings-docs/greetings-v1.yaml"));
