@@ -3,7 +3,8 @@ const cors = require("cors");
 const helmet = require("helmet");
 const path = require("path");
 const swaggerUi = require("swagger-ui-express");
-const YAML = require("yamljs");
+const fs = require("fs");
+const yaml = require("js-yaml");
 
 // Load routes
 const v1Routes = require("./routes/v1");
@@ -19,9 +20,9 @@ app.use(express.json());
 app.use("/specs", express.static(path.join(__dirname, "specs")));
 
 // Load YAML specs
-const v1Spec = YAML.load(path.join(__dirname, "specs/greetings-v1.yaml"));
-const v2Spec = YAML.load(path.join(__dirname, "specs/greetings-v2.yaml"));
-const v3Spec = YAML.load(path.join(__dirname, "specs/greetings-v3.yaml"));
+const v1Spec = yaml.load(fs.readFileSync(path.join(__dirname, "specs/greetings-v1.yaml"), "utf-8"));
+const v2Spec = yaml.load(fs.readFileSync(path.join(__dirname, "specs/greetings-v2.yaml"), "utf-8"));
+const v3Spec = yaml.load(fs.readFileSync(path.join(__dirname, "specs/greetings-v3.yaml"), "utf-8"));
 
 // Serve Swagger UI for each version
 app.use("/docs/v1", swaggerUi.serve, swaggerUi.setup(v1Spec));
